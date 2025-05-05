@@ -7,7 +7,7 @@ export class Field {
   id: string;
 
   @Column()
-  type: string; // 'signature' | 'date' | 'initials' | 'text'
+  type: string; 
 
   @Column()
   x: number;
@@ -18,6 +18,15 @@ export class Field {
   @Column()
   page: number;
 
+  @Column({ nullable: true })
+  name: string;
+
   @ManyToOne(() => Signer, (signer) => signer.fields)
   signer: Signer;
+
+  @Column({ nullable: true })
+  value: string;
+
+  @Column({ default: false })
+  signed: boolean;
 }

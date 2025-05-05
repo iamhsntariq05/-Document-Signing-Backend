@@ -1,13 +1,17 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, Param } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Signer } from '../signers/entities/signer.entity';
+import { Field } from 'src/signers/entities/field.entity';
 
 @Injectable()
 export class SigningService {
   constructor(
     @InjectRepository(Signer)
     private readonly signerRepo: Repository<Signer>,
+    @InjectRepository(Field)
+    private readonly fieldRepo: Repository<Field>,
+
   ) {}
 
   async sendForSigning(documentId: string) {
@@ -41,4 +45,39 @@ export class SigningService {
       URL :url
     };
   }
+
+  async getSigningView(signerToken: string) {
+    const signer = await this.signerRepo.findOne({
+      where: { signingToken: signerToken },
+      relations: ['document', 'fields'],
+    });
+
+    if (!signer) throw new NotFoundException('Invalid signer token');
+
+    return {
+      document: signer.document, 
+      fields: signer.fields,
+    };
+  }
+
+  async submitSignedFields(signerToken: string, signedFields: { [fieldId: string]: string }) {
+    const signer = await this.signerRepo.findOne({
+      where: { signingToken: signerToken },
+      relations: ['fields'],
+    });
+
+    if (!signer) throw new NotFoundException('Invalid signer token');
+
+    for (const field of signer.fields) {
+      const value = signedFields[field.id];
+      if (value) {
+        field.value = value;
+        field.signed = true;
+        await this.fieldRepo.save(field);
+      }
+    }
+
+    return { message: 'Fields submitted successfully.' };
+  }
+
 }

@@ -18,8 +18,14 @@ export class Document {
   @Column()
   size: number;
 
+  @Column({ nullable: true })
+  title: string;
+
   @CreateDateColumn()
   uploadedAt: Date;
+
+  @CreateDateColumn()
+  createdAt: Date;
 
   @OneToMany(() => Signer, (signer) => signer.document, { cascade: true })
   signers: Signer[];

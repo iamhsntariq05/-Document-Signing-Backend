@@ -29,4 +29,9 @@ export class DocumentController {
     const filePath = await this.documentService.getFilePath(id);
     res.download(filePath);
   }
+
+  @Get(':id/final')
+  async getFinalDocument(@Param('id') documentId: string) {
+    return this.documentService.getFinalDocument(documentId);
+  }
 }

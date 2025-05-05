@@ -1,13 +1,13 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { SigningService } from './signing.service';
 import { SigningController } from './signing.controller';
-import { Signer } from 'src/signers/entities/signer.entity';
+import { SigningService } from './signing.service';
+import { Signer } from '../signers/entities/signer.entity';
+import { Field } from '../signers/entities/field.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Signer])],
+  imports: [TypeOrmModule.forFeature([Signer, Field])],
   controllers: [SigningController],
   providers: [SigningService],
-  exports: [SigningService], // optional
 })
 export class SigningModule {}

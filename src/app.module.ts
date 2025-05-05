@@ -13,7 +13,7 @@ import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ isGlobal: true }),
+    ConfigModule.forRoot({ isGlobal: true }), 
     TypeOrmModule.forRoot({
       type: 'sqlite',
       database: './db.sqlite',
@@ -29,6 +29,6 @@ import { ConfigModule } from '@nestjs/config';
     AppConfigModule,
   ],
   controllers: [AppController],
-  providers: [AppService], // Remove UsersService from here
+  providers: [AppService], 
 })
 export class AppModule {}
