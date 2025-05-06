@@ -9,7 +9,7 @@ import { StorageModule } from './storage/storage.module';
 import { AppConfigModule } from './config/config.module';
 import { UsersModule } from './users/users.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule } from '@nestjs/config';  
 
 @Module({
   imports: [
